@@ -30,7 +30,7 @@ SELECT count(*), d.Name, d.GroupName
 FROM HumanResources.Employee as e, HumanResources.Department as d, HumanResources.EmployeeDepartmentHistory as ed
 WHERE e.BusinessEntityID=ed.BusinessEntityID and ed.DepartmentID=d.DepartmentID
 GROUP BY d.Name, d.GroupName
-
+ 
 SELECT p.FirstName, p.LastName, e.HireDate FROM Person.Person as p ,HumanResources.Employee as e
 WHERE p.BusinessEntityID=e.BusinessEntityID AND YEAR(e.HireDate)=2009 --e.HireDate like '2009%'
 
@@ -44,3 +44,21 @@ WHERE e.BusinessEntityID=ed.BusinessEntityID and ed.DepartmentID=d.DepartmentID 
 (SELECT top 1 COUNT(*)
 FROM HumanResources.Department as d, HumanResources.EmployeeDepartmentHistory as ed, HumanResources.Employee as e
 WHERE e.BusinessEntityID=ed.BusinessEntityID and ed.DepartmentID=d.DepartmentID GROUP BY d.Name ORDER by COUNT(*) DESC)
+
+SELECT p.FirstName, p.LastName, e.HireDate
+FROM Person.Person as p ,HumanResources.Employee as e
+WHERE p.BusinessEntityID=e.BusinessEntityID ORDER BY YEAR(e.HireDate)
+
+SELECT top 1 p.FirstName, p.LastName, YEAR(e.HireDate) 
+FROM Person.Person as p ,HumanResources.Employee as e, HumanResources.Department as d, HumanResources.EmployeeDepartmentHistory as ed
+WHERE p.BusinessEntityID=e.BusinessEntityID and e.BusinessEntityID=ed.BusinessEntityID 
+and ed.DepartmentID=d.DepartmentID and d.Name='Engineering' ORDER BY YEAR(e.HireDate)
+
+SELECT p.FirstName, p.LastName, e.HireDate
+FROM Person.Person as p ,HumanResources.Employee as e
+WHERE p.BusinessEntityID=e.BusinessEntityID AND (2020 - YEAR(e.HireDate)) = 10
+
+SELECT COUNT(*)
+FROM Person.Person as p ,HumanResources.Employee as e, HumanResources.Department as d, HumanResources.EmployeeDepartmentHistory as ed
+WHERE p.BusinessEntityID=e.BusinessEntityID and e.BusinessEntityID=ed.BusinessEntityID 
+and ed.DepartmentID=d.DepartmentID and d.Name='Production' AND (2022 - YEAR(e.HireDate)) >= 11

@@ -33,3 +33,14 @@ GROUP BY d.Name, d.GroupName
 
 SELECT p.FirstName, p.LastName, e.HireDate FROM Person.Person as p ,HumanResources.Employee as e
 WHERE p.BusinessEntityID=e.BusinessEntityID AND YEAR(e.HireDate)=2009 --e.HireDate like '2009%'
+
+SELECT d.Name, COUNT(*)
+FROM HumanResources.Department as d, HumanResources.EmployeeDepartmentHistory as ed, HumanResources.Employee as e
+WHERE e.BusinessEntityID=ed.BusinessEntityID and ed.DepartmentID=d.DepartmentID GROUP BY d.Name ORDER by COUNT(*) DESC
+
+SELECT d.Name
+FROM HumanResources.Department as d, HumanResources.EmployeeDepartmentHistory as ed, HumanResources.Employee as e
+WHERE e.BusinessEntityID=ed.BusinessEntityID and ed.DepartmentID=d.DepartmentID GROUP BY d.Name HAVING COUNT(*) = 
+(SELECT top 1 COUNT(*)
+FROM HumanResources.Department as d, HumanResources.EmployeeDepartmentHistory as ed, HumanResources.Employee as e
+WHERE e.BusinessEntityID=ed.BusinessEntityID and ed.DepartmentID=d.DepartmentID GROUP BY d.Name ORDER by COUNT(*) DESC)
